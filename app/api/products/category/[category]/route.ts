@@ -2,10 +2,13 @@ import { connectToDatabase } from '@/lib/db';
 import { Product } from '@/models/Product';
 import { NextResponse } from 'next/server';
 
-export async function GET(
-  request: Request,
-  context: { params: { category: string } } // ✅ don't explicitly import anything, just infer inline
-) {
+type Context = {
+  params: {
+    category: string;
+  };
+};
+
+export async function GET(req: Request, context: Context) {
   try {
     await connectToDatabase();
 
