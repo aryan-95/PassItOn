@@ -2,12 +2,14 @@ import { connectToDatabase } from '@/lib/db';
 import { Product } from '@/models/Product';
 import { NextResponse } from 'next/server';
 
-export async function GET(_: Request, { params }: { params: { category: string } }) {
+export async function GET(request: Request, context: { params: { category: string } }) {
   try {
     await connectToDatabase();
 
+    const category = context.params.category;
+
     const products = await Product.find({
-      category: { $regex: new RegExp(`^${params.category}$`, 'i') },
+      category: { $regex: new RegExp(`^${category}$`, 'i') },
     }).sort({ createdAt: -1 });
 
     return NextResponse.json({ products });
