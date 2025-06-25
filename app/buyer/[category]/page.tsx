@@ -1,30 +1,35 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { ProductCard } from '@/components/ProductCard';
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
+export default function CategoryPage() {
+  //@ts-ignore
+  const { category } = useParams();
   const [products, setProducts] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filtered, setFiltered] = useState<any[]>([]);
 
   useEffect(() => {
+    if (!category) return;
+
     const fetchProducts = async () => {
-      const res = await fetch(`/api/products/category/${params.category}`);
+      const res = await fetch(`/api/products/category/${category}`);
       const data = await res.json();
       setProducts(data.products);
       setFiltered(data.products);
     };
 
     fetchProducts();
-  }, [params.category]);
+  }, [category]);
 
   useEffect(() => {
     const term = searchTerm.toLowerCase();
     const results = products.filter(p =>
       p.title.toLowerCase().includes(term) ||
       p.college.toLowerCase().includes(term) ||
-      p.price.includes(term)
+      p.price.toLowerCase().includes(term)
     );
     setFiltered(results);
   }, [searchTerm, products]);
@@ -32,7 +37,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
   return (
     <div className="min-h-screen px-6 py-10 bg-black text-white">
       <h2 className="text-3xl font-bold mb-6 capitalize text-center">
-        {params.category} Listings
+        {category} Listings
       </h2>
 
       <input
