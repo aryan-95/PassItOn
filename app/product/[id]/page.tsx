@@ -1,10 +1,16 @@
+import { use } from 'react';
 import { connectToDatabase } from '@/lib/db';
 import { Product } from '@/models/Product';
 
+export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params); // ✅ unwrap the Promise
 
-export default async function ProductDetail({ params }: { params: { id: string } }) {
-  await connectToDatabase();
-  const product = await Product.findById(params.id);
+  const fetchProduct = async () => {
+    await connectToDatabase();
+    return await Product.findById(id);
+  };
+
+  const product = use(fetchProduct());
 
   if (!product) {
     return (
