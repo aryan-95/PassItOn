@@ -2,10 +2,8 @@ import { connectToDatabase } from '@/lib/db';
 import { Product } from '@/models/Product';
 import { NextResponse } from 'next/server';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { category: string } }
-) {
+
+export async function GET(request: Request, { params }: { params: { category: string } }) {
   try {
     await connectToDatabase();
 
