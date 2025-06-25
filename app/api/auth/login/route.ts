@@ -1,17 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { connectToDatabase } from '@/lib/db';
 import { User } from '@/models/User';
 
-export const runtime = 'nodejs'; // ✅ use Node.js runtime (not edge)
+export const runtime = 'nodejs'; // Ensure Node.js runtime (not edge)
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
+  console.log('Login attempt:', { email, password });
 
-  await connectToDatabase();
+  await connectToDatabase().then(() => console.log('Connected to database'));
 
   const user = await User.findOne({ email });
-  if (!user || user.password !== password) {
+  if (!user) {
+    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+  if (!isPasswordCorrect) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
   }
 
@@ -21,12 +28,11 @@ export async function POST(req: NextRequest) {
 
   const res = NextResponse.json({ success: true });
 
-  // ✅ Set secure cookie for browser (especially on Vercel)
   res.cookies.set({
     name: 'token',
     value: token,
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 7,
