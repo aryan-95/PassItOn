@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
 import { connectToDatabase } from '@/lib/db';
 import { Otp } from '@/models/Otp';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   await connectToDatabase();
@@ -22,17 +19,6 @@ export async function POST(req: Request) {
     { upsert: true, new: true }
   );
 
-  try {
-    await resend.emails.send({
-      from: 'Pass It On <onboarding@resend.dev>'  , // ✅ works in dev mode
-
-      to: "dhruv.2428it383@kiet.edu",
-      subject: 'Your OTP for Pass It On',
-      html: `<p>Your OTP is <strong>${otp}</strong>. It will expire in 10 minutes.</p>`,
-    });
-
-    return NextResponse.json({ success: true });
-  } catch (err: any) {
-    return NextResponse.json({ error: 'Email sending failed' }, { status: 500 });
-  }
+  // ✅ Return the OTP to frontend for client-side email sending
+  return NextResponse.json({ success: true, otp });
 }

@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import emailjs from "@emailjs/browser" 
+//import { browser } from 'process';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -26,9 +28,29 @@ export default function AuthPage() {
     const data = await res.json();
 
     if (res.ok) {
-      setStatus('✅ OTP sent to your email');
-      setStep('verify');
-    } else {
+  console.log("OTP from backend:", data.otp); // ✅ This should show up
+  console.log("Sending email using emailjs...");
+
+  try {
+    const result = await emailjs.send(
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+      {
+        to_email: email,
+        otp: data.otp,
+      },
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+    );
+
+    console.log("EmailJS result:", result); // ✅ This should show up
+    setStatus('✅ OTP sent to your email');
+    setStep('verify');
+  } catch (err) {
+    console.error('EmailJS send error:', err); // ✅ Check if you see this
+    setStatus('❌ Failed to send OTP email');
+  }
+}
+ else {
       setStatus(`❌ ${data.error}`);
     }
 
@@ -50,7 +72,7 @@ export default function AuthPage() {
     if (res.ok) {
       setStatus('✅ Verified! Redirecting...');
       setTimeout(() => {
-        window.location.href = '/';
+        router.push('/');
       }, 1000);
     } else {
       setStatus(`❌ ${data.error}`);

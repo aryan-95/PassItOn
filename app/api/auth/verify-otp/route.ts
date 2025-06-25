@@ -12,6 +12,7 @@ export async function POST(req: Request) {
   const { email, password, otp } = await req.json();
 
   const existing = await Otp.findOne({ email });
+
   if (!existing || existing.otp !== otp || existing.expiresAt < new Date()) {
     return NextResponse.json({ error: 'Invalid or expired OTP' }, { status: 400 });
   }
@@ -27,13 +28,16 @@ export async function POST(req: Request) {
 
   const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '7d' });
 
-  const res = NextResponse.json({ success: true });
-  res.cookies.set('token', token, {
+  const response = NextResponse.json({ success: true });
+  response.cookies.set({
+    name: 'token',
+    value: token,
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     path: '/',
+    sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 7,
   });
 
-  return res;
+  return response;
 }
