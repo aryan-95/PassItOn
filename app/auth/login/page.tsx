@@ -37,7 +37,13 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
       <div className="bg-zinc-900 p-8 rounded-xl max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        {/* ✅ Startup title and slogan */}
+        <h1 className="text-3xl font-bold mb-2 text-center text-white">Pass It On</h1>
+        <p className="text-sm text-zinc-400 text-center mb-6">
+          Helping students declutter and find essentials within your hostel or college.
+        </p>
+
+        {/* <h2 className="text-2xl font-bold mb-6 text-center">Login</h2> */}
 
         <input
           type="email"
@@ -62,7 +68,9 @@ export default function LoginPage() {
           {loading ? 'Logging in...' : 'Login'}
         </button>
 
-        {status && <p className="mt-4 text-yellow-400 text-sm text-center">{status}</p>}
+        {status && (
+          <p className="mt-4 text-yellow-400 text-sm text-center">{status}</p>
+        )}
       </div>
     </div>
   );
