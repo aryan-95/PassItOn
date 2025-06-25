@@ -1,31 +1,33 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 import { connectToDatabase } from '@/lib/db';
 import { User } from '@/models/User';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret-key';
+export const runtime = 'nodejs'; // ✅ Important: avoid Edge runtime issues
 
-export async function POST(req: Request) {
-  await connectToDatabase();
+export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
 
+  await connectToDatabase();
+
   const user = await User.findOne({ email });
-  if (!user) {
-    return NextResponse.json({ error: 'User not found' }, { status: 400 });
+  if (!user || user.password !== password) {
+    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
   }
 
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) {
-    return NextResponse.json({ error: 'Incorrect password' }, { status: 400 });
-  }
-
-  const token = jwt.sign({ email: user.email, id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
+    expiresIn: '7d',
+  });
 
   const res = NextResponse.json({ success: true });
-  res.cookies.set('token', token, {
+
+  res.cookies.set({
+    name: 'token',
+    value: token,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: true,
+    sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 7,
   });

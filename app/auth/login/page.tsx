@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState('');
@@ -23,7 +25,7 @@ export default function LoginPage() {
     if (res.ok) {
       setStatus('✅ Logged in! Redirecting...');
       setTimeout(() => {
-        window.location.href = '/';
+        router.push('/');
       }, 1000);
     } else {
       setStatus(`❌ ${data.error}`);
