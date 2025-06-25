@@ -1,13 +1,8 @@
-
-// @ts-nocheck
 import { connectToDatabase } from '@/lib/db';
 import { Product } from '@/models/Product';
 
-interface Props {
-  params: { id: string };
-}
 
-export default async function ProductDetail({ params }: Props) {
+export default async function ProductDetail({ params }: { params: { id: string } }) {
   await connectToDatabase();
   const product = await Product.findById(params.id);
 
