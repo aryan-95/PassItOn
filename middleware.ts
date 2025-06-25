@@ -27,14 +27,14 @@ export async function middleware(request: NextRequest) {
 
   if (!token) {
     console.log('⛔ No token');
-    return NextResponse.redirect(new URL('/auth/login', request.url));
+    return NextResponse.redirect(new URL('/auth/', request.url));
   }
 
   const payload = await verifyJWT(token);
 
   if (!payload) {
     console.log('❌ Invalid token');
-    return NextResponse.redirect(new URL('/auth/login', request.url));
+    return NextResponse.redirect(new URL('/auth/', request.url));
   }
 
   console.log('✅ Authenticated:', payload);
