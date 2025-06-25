@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LogoutButton } from '@/components/LogoutButton';
+//import { LogoutButton } from '@/components/LogoutButton';
 
 
 export default function SellerPage() {
@@ -116,7 +116,7 @@ export default function SellerPage() {
           Submit
         </button>
         
-        <LogoutButton />
+      
         {status && <p className="text-sm text-center mt-4 text-green-400">{status}</p>}
       </motion.form>
       

@@ -2,12 +2,18 @@
 
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { LogoutButton } from '@/components/LogoutButton'; // ✅ Ensure correct path
 
 export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
+    <div className="min-h-screen relative flex flex-col items-center justify-center text-center px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
+      {/* ✅ Top-right logout button */}
+      <div className="absolute top-4 right-6">
+        <LogoutButton />
+      </div>
+
       <motion.h1
         className="text-5xl md:text-6xl font-extrabold mb-4 text-white"
         initial={{ opacity: 0, y: -30 }}
