@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { connectToDatabase } from '@/lib/db';
 import { User } from '@/models/User';
 
-export const runtime = 'nodejs'; // ✅ Important: avoid Edge runtime issues
+export const runtime = 'nodejs'; // ✅ use Node.js runtime (not edge)
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
@@ -22,6 +21,7 @@ export async function POST(req: NextRequest) {
 
   const res = NextResponse.json({ success: true });
 
+  // ✅ Set secure cookie for browser (especially on Vercel)
   res.cookies.set({
     name: 'token',
     value: token,

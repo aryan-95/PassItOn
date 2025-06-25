@@ -19,27 +19,35 @@ export async function middleware(request: NextRequest) {
 
   const isPublicPath =
     pathname.startsWith('/auth') ||
-    pathname.startsWith('/api') || // ⬅️ Skip APIs from middleware
+    pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
-    pathname.startsWith('/favicon.ico') ||
-    pathname === '/';
+    pathname.startsWith('/favicon');
 
-  if (isPublicPath) {
-    return NextResponse.next();
-  }
+  if (isPublicPath) return NextResponse.next();
 
   if (!token) {
-    console.warn('⛔ No token, redirecting...');
+    console.log('⛔ No token');
     return NextResponse.redirect(new URL('/auth/login', request.url));
   }
 
-  const isValid = await verifyJWT(token);
+  const payload = await verifyJWT(token);
 
-  if (!isValid) {
-    console.warn('❌ Invalid token, redirecting...');
+  if (!payload) {
+    console.log('❌ Invalid token');
     return NextResponse.redirect(new URL('/auth/login', request.url));
   }
 
-  console.log('✅ Authenticated:', isValid);
+  console.log('✅ Authenticated:', payload);
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: [
+    '/',
+    '/choose-role',
+    '/buyer/:path*',
+    '/seller/:path*',
+    '/product/:path*',
+    '/post',
+  ],
+};
