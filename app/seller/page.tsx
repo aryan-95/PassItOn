@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-//import { LogoutButton } from '@/components/LogoutButton';
-
 
 export default function SellerPage() {
   const [formData, setFormData] = useState({
@@ -15,9 +13,36 @@ export default function SellerPage() {
   });
 
   const [status, setStatus] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setStatus('Uploading image...');
+
+    const form = new FormData();
+    form.append('file', file);
+
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      body: form,
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setFormData(prev => ({ ...prev, image: data.secure_url }));
+      setStatus('✅ Image uploaded');
+    } else {
+      setStatus('❌ Image upload failed');
+    }
+
+    setUploading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,21 +56,25 @@ export default function SellerPage() {
       });
 
       if (res.ok) {
-        setStatus('Product listed successfully!');
-        setFormData({ title: '', price: '', category: '', image: '', college: 'KIET Group of Institutions' });
+        setStatus('✅ Product listed successfully!');
+        setFormData({
+          title: '',
+          price: '',
+          category: '',
+          image: '',
+          college: 'KIET Group of Institutions',
+        });
       } else {
-        setStatus('Failed to submit. Try again.');
+        setStatus('❌ Failed to submit. Try again.');
       }
     } catch (err) {
       console.error(err);
-      setStatus('Error submitting the form.');
+      setStatus('❌ Error submitting the form.');
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4 py-10 text-white">
-        
-
       <motion.form
         onSubmit={handleSubmit}
         className="w-full max-w-lg bg-zinc-900 p-8 rounded-xl shadow-xl"
@@ -92,14 +121,19 @@ export default function SellerPage() {
         </select>
 
         <input
-          type="text"
-          name="image"
-          placeholder="Image URL"
-          value={formData.image}
-          onChange={handleChange}
-          required
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
           className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
         />
+
+        {formData.image && (
+          <img
+            src={formData.image}
+            alt="Preview"
+            className="mb-4 w-full h-48 object-cover rounded-xl"
+          />
+        )}
 
         <input
           type="text"
@@ -112,14 +146,13 @@ export default function SellerPage() {
         <button
           type="submit"
           className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition"
+          disabled={uploading}
         >
-          Submit
+          {uploading ? 'Please wait...' : 'Submit'}
         </button>
-        
-      
-        {status && <p className="text-sm text-center mt-4 text-green-400">{status}</p>}
+
+        {status && <p className="text-sm text-center mt-4 text-yellow-400">{status}</p>}
       </motion.form>
-      
     </div>
   );
 }
