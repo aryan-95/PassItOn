@@ -114,6 +114,13 @@ export default function AuthPage() {
         {status && (
           <p className="mt-4 text-center text-sm text-yellow-400">{status}</p>
         )}
+
+        <p
+          className="mt-6 text-sm text-center text-zinc-400 hover:text-white cursor-pointer"
+          onClick={() => router.push('/auth/login')}
+        >
+          Already have an account? Login
+        </p>
       </div>
     </div>
   );
