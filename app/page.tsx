@@ -40,14 +40,14 @@ export default function HomePage() {
       >
         <button
           className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-2xl shadow-md transition"
-          onClick={() => router.push('/choose-role')}
+          onClick={() => router.push('/buyer')}
         >
           I’m a Buyer
         </button>
 
         <button
           className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-md transition"
-          onClick={() => router.push('/choose-role')}
+          onClick={() => router.push('/seller')}
         >
           I’m a Seller
         </button>
