@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,15 +38,31 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+    <div className="min-h-screen flex-col bg-black text-white flex items-center justify-center px-6">
+      <div>
+              <motion.div
+              className="mb-6"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Image
+                src="/logo.png" // ✅ make sure your logo is in public/logo.png
+                alt="Startup Logo"
+                width={100}
+                height={100}
+                className="mx-auto rounded-full"
+              />
+            </motion.div>
+            </div>
       <div className="bg-zinc-900 p-8 rounded-xl max-w-md w-full">
         {/* ✅ Startup title and slogan */}
-        <h1 className="text-3xl font-bold mb-2 text-center text-white">Pass It On</h1>
+        {/* <h1 className="text-3xl font-bold mb-2 text-center text-white">Pass It On</h1>
         <p className="text-sm text-zinc-400 text-center mb-6">
           Helping students declutter and find essentials within your hostel or college.
-        </p>
+        </p> */}
 
-        {/* <h2 className="text-2xl font-bold mb-6 text-center">Login</h2> */}
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
         <input
           type="email"

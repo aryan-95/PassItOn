@@ -1,9 +1,10 @@
 'use client';
-
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import emailjs from "@emailjs/browser" 
 //import { browser } from 'process';
+import Image from 'next/image';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -82,7 +83,35 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+    <div className="min-h-screen bg-black flex-col text-white flex items-center justify-center px-6">
+      <div>
+        <motion.div
+        className="mb-6"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Image
+          src="/logo.png" // ✅ make sure your logo is in public/logo.png
+          alt="Startup Logo"
+          width={100}
+          height={100}
+          className="mx-auto rounded-full"
+        />
+      </motion.div>
+      </div>
+      <div>
+        {/* <motion.h2
+        className="text-5xl md:text-6xl font-extrabold mb-4 text-white"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Pass It On
+      </motion.h2> */}
+
+     
+      </div>
       <div className="bg-zinc-900 p-8 rounded-xl max-w-md w-full">
         <h2 className="text-2xl font-bold mb-6 text-center">
           {step === 'signup' ? 'Sign Up with OTP' : 'Enter OTP'}
