@@ -9,7 +9,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   await connectToDatabase();
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 //@ts-ignore
   const token: string | undefined = cookieStore.get('token')?.value;
 

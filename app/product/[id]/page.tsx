@@ -37,9 +37,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
         src={product.image}
         alt={product.title}
         className="w-full max-w-md h-64 object-cover rounded-xl mb-6 shadow"
-        onError={(e) => {
-          (e.target as HTMLImageElement).src = '/placeholder.png';
-        }}
+        
       />
 
       <h2 className="text-3xl font-bold mb-2">{product.title}</h2>
