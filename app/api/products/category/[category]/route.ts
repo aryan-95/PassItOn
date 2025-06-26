@@ -3,11 +3,11 @@ import { connectToDatabase } from '@/lib/db';
 import { Product } from '@/models/Product';
 import { NextResponse } from 'next/server';
 
-export async function GET(request, context) {
+export async function GET(request, { params }) {
   try {
     await connectToDatabase();
 
-    const { category } = await context.params; // ✅ await here
+    const category = params.category;
 
     const products = await Product.find({
       category: { $regex: new RegExp(`^${category}$`, 'i') },

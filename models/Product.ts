@@ -1,4 +1,3 @@
-// models/Product.ts
 import mongoose, { Schema } from 'mongoose';
 
 const ProductSchema = new Schema({
@@ -7,7 +6,6 @@ const ProductSchema = new Schema({
   category: { type: String, required: true },
   image: { type: String, required: true },
   college: { type: String, required: true },
-  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // ✅ reference
   createdAt: { type: Date, default: Date.now },
 });
 
