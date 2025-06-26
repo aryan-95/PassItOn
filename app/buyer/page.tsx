@@ -20,32 +20,50 @@ export default function BuyerPage() {
   };
 
   return (
-    <div className="min-h-screen px-6 py-12 bg-black text-white">
+    <motion.div
+      className="min-h-screen px-6 py-12 bg-black text-white"
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       <motion.h2
         className="text-4xl font-bold mb-10 text-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.5 }}
       >
         Choose a Category
       </motion.h2>
 
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.4 }}
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.08,
+            },
+          },
+        }}
       >
-        {categories.map((cat, i) => (
-          <button
+        {categories.map((cat) => (
+          <motion.button
             key={cat.name}
             onClick={() => handleCategoryClick(cat.name)}
-            className={`p-6 rounded-xl text-lg font-semibold shadow-md hover:scale-105 transition ${cat.color}`}
+            variants={{
+              hidden: { opacity: 0, y: 10 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`p-6 rounded-xl text-lg font-semibold shadow-md transition-colors duration-200 ${cat.color} hover:shadow-lg hover:shadow-white/10 focus:outline-none`}
           >
             {cat.name}
-          </button>
+          </motion.button>
         ))}
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
