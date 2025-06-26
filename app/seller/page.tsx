@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function SellerPage() {
@@ -76,52 +76,48 @@ export default function SellerPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4 py-10 text-white">
+    <motion.div
+      className="min-h-screen flex items-center justify-center bg-black px-4 py-10 text-white"
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       <motion.form
         onSubmit={handleSubmit}
         className="w-full max-w-lg bg-zinc-900 p-8 rounded-xl shadow-xl"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        initial={{ y: 30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
       >
         <h2 className="text-2xl font-bold mb-6 text-center">List a Product</h2>
 
-        <input
-          type="text"
-          name="title"
-          placeholder="Item Title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
-        />
+        {/* Input fields */}
+        {['title', 'price', 'phone'].map((field) => (
+          <input
+            key={field}
+            type="text"
+            name={field}
+            placeholder={
+              field === 'title'
+                ? 'Item Title'
+                : field === 'price'
+                ? 'Price (INR)'
+                : 'Contact Phone Number'
+            }
+            value={(formData as any)[field]}
+            onChange={handleChange}
+            required
+            className="w-full p-3 mb-4 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+          />
+        ))}
 
-        <input
-          type="text"
-          name="price"
-          placeholder="Price (INR)"
-          value={formData.price}
-          onChange={handleChange}
-          required
-          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
-        />
-
-        <input
-          type="text"
-          name="phone"
-          placeholder="Contact Phone Number"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
-        />
-
+        {/* Category */}
         <select
           name="category"
           value={formData.category}
           onChange={handleChange}
           required
-          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
+          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
         >
           <option value="">Select Category</option>
           <option value="Books">Books</option>
@@ -132,21 +128,27 @@ export default function SellerPage() {
           <option value="Other">Other</option>
         </select>
 
+        {/* Image upload */}
         <input
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
-          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
+          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white cursor-pointer file:cursor-pointer"
         />
 
+        {/* Preview */}
         {formData.image && (
-          <img
+          <motion.img
             src={formData.image}
             alt="Preview"
             className="mb-4 w-full h-48 object-cover rounded-xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
           />
         )}
 
+        {/* College (disabled) */}
         <input
           type="text"
           name="college"
@@ -155,16 +157,28 @@ export default function SellerPage() {
           className="w-full p-3 mb-6 rounded bg-zinc-700 text-white"
         />
 
-        <button
+        {/* Submit */}
+        <motion.button
           type="submit"
-          className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all disabled:opacity-60"
           disabled={uploading}
         >
           {uploading ? 'Please wait...' : 'Submit'}
-        </button>
+        </motion.button>
 
-        {status && <p className="text-sm text-center mt-4 text-yellow-400">{status}</p>}
+        {/* Status */}
+        {status && (
+          <motion.p
+            className="text-sm text-center mt-4 text-yellow-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {status}
+          </motion.p>
+        )}
       </motion.form>
-    </div>
+    </motion.div>
   );
 }

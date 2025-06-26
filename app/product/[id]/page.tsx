@@ -13,16 +13,15 @@ type ProductType = {
   email?: string;
 };
 
+async function getProduct(id: string): Promise<ProductType | null> {
+  await connectToDatabase();
+  const product = await Product.findById(id).lean();
+  return product as ProductType | null;
+}
+
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-
-  const fetchProduct = async (): Promise<ProductType | null> => {
-    await connectToDatabase();
-    const product = await Product.findById(id).lean();
-    return product as ProductType | null;
-  };
-
-  const product = use(fetchProduct());
+  const product = use(getProduct(id));
 
   if (!product) {
     return (
@@ -37,8 +36,12 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       <img
         src={product.image}
         alt={product.title}
-        className="w-full max-w-md h-64 object-cover rounded-xl mb-6"
+        className="w-full max-w-md h-64 object-cover rounded-xl mb-6 shadow"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = '/placeholder.png';
+        }}
       />
+
       <h2 className="text-3xl font-bold mb-2">{product.title}</h2>
       <p className="text-green-400 text-xl mb-1">₹{product.price}</p>
       <p className="text-zinc-400 text-sm mb-2">Category: {product.category}</p>
