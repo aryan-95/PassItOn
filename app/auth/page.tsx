@@ -29,8 +29,8 @@ export default function AuthPage() {
     const data = await res.json();
 
     if (res.ok) {
-  console.log("OTP from backend:", data.otp); // ✅ This should show up
-  console.log("Sending email using emailjs...");
+  // console.log("OTP from backend:", data.otp); // ✅ This should show up
+  // console.log("Sending email using emailjs...");
 
   try {
     const result = await emailjs.send(
@@ -43,7 +43,7 @@ export default function AuthPage() {
       process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
     );
 
-    console.log("EmailJS result:", result); // ✅ This should show up
+    //console.log("EmailJS result:", result); // ✅ This should show up
     setStatus('✅ OTP sent to your email');
     setStep('verify');
   } catch (err) {

@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { Mail } from 'lucide-react'; // Make sure lucide-react is installed
 import { LogoutButton } from '@/components/LogoutButton';
 
 export default function HomePage() {
@@ -15,23 +16,21 @@ export default function HomePage() {
         <LogoutButton />
       </div>
 
-      {/* Logo at the top */}
+      {/* Logo */}
       <motion.div
         className="mb-6"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        
         <Image
-          src="/logo.png" // ✅ make sure your logo is in public/logo.png
+          src="/logo.png"
           alt="Startup Logo"
           width={100}
           height={100}
           className="mx-auto rounded-full"
         />
       </motion.div>
-      
 
       <motion.h1
         className="text-5xl md:text-6xl font-extrabold mb-4 text-white"
@@ -51,8 +50,8 @@ export default function HomePage() {
         Helping students declutter and find essentials. Buy or sell used items within your hostel or college – seamlessly.
       </motion.p>
       <p className="text-sm text-zinc-400 mt-2 font-medium">Earn. Learn. Share. 🚀</p>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
       <motion.div
         className="flex gap-6"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -72,9 +71,19 @@ export default function HomePage() {
         >
           I’m a Seller
         </button>
-        
       </motion.div>
-      
+
+      {/* Footer */}
+      <footer className="absolute bottom-4 w-full flex flex-col items-center gap-2 text-zinc-500 text-sm">
+        <button
+          onClick={() => window.location.href = "mailto:freakyakkmu@gmail.com"}
+          className="flex items-center gap-2 text-white hover:text-green-500 transition"
+        >
+          <Mail size={18} />
+          Contact Us
+        </button>
+        <span className="text-xs text-zinc-400">© 2025 Passion Writers. All rights reserved.</span>
+      </footer>
     </div>
   );
 }
