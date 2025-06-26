@@ -1,29 +1,25 @@
 import { Product } from '@/models/Product';
 import { connectToDatabase } from '@/lib/db';
+import { notFound } from 'next/navigation';
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
+type ProductType = {
+  _id: string;
+  title: string;
+  price: string;
+  category: string;
+  image: string;
+  college: string;
+  phone?: string;
+  email?: string;
+};
 
-export default async function ProductDetailPage({ params }: Props) {
+export default async function ProductDetailPage({ params }: { params: { id: string } }) {
   await connectToDatabase();
 
   //@ts-ignore
-  const product: {
-    title: string;
-    price: string;
-    category: string;
-    image: string;
-    college: string;
-    email?: string;
-    phone?: string;
-  } | null = await Product.findById(params.id).lean();
+  const product: ProductType | null = await Product.findById(params.id).lean();
 
-  if (!product) {
-    return <div className="text-center text-white mt-10">Product not found</div>;
-  }
+  if (!product) return notFound();
 
   return (
     <div className="min-h-screen bg-black text-white px-6 py-10">
@@ -40,31 +36,30 @@ export default async function ProductDetailPage({ params }: Props) {
         <p className="text-sm text-zinc-400 mb-4">College: {product.college}</p>
 
         {product.phone && (
-  <p className="text-md mb-1">
-    📞 Phone:{' '}
-    <a
-      href={`https://wa.me/${'91' + product.phone}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-green-400 underline hover:text-green-300"
-    >
-      {product.phone}
-    </a>
-  </p>
-)}
+          <p className="text-md mb-1">
+            📞 Phone:{' '}
+            <a
+              href={`https://wa.me/91${product.phone}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 underline hover:text-green-300"
+            >
+              {product.phone}
+            </a>
+          </p>
+        )}
 
-{product.email && (
-  <p className="text-md">
-    ✉️ Email:{' '}
-    <a
-      href={`mailto:${product.email}`}
-      className="text-blue-400 underline hover:text-blue-300"
-    >
-      {product.email}
-    </a>
-  </p>
-)}
-
+        {product.email && (
+          <p className="text-md">
+            ✉️ Email:{' '}
+            <a
+              href={`mailto:${product.email}`}
+              className="text-blue-400 underline hover:text-blue-300"
+            >
+              {product.email}
+            </a>
+          </p>
+        )}
       </div>
     </div>
   );
