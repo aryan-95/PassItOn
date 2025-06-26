@@ -8,6 +8,8 @@ interface Props {
     price: string;
     college: string;
     category: string;
+    email?: string;
+    phone?: string;
   };
 }
 
@@ -21,10 +23,20 @@ export function ProductCard({ product }: Props) {
           className="w-full h-48 object-cover"
         />
         <div className="p-4">
-          <h3 className="text-lg font-bold">{product.title}</h3>
+          <h3 className="text-lg font-bold text-white">{product.title}</h3>
           <p className="text-sm text-zinc-400">{product.college}</p>
           <p className="mt-2 text-green-400 font-semibold">₹{product.price}</p>
           <span className="text-xs text-zinc-500">{product.category}</span>
+
+          {/* Contact Details */}
+          {product.phone && (
+            <p className="mt-2 text-sm text-zinc-300">📞 {product.phone}</p>
+          )}
+          {product.email && (
+            <p className="text-sm text-blue-400 underline break-all">
+              ✉️ {product.email}
+            </p>
+          )}
         </div>
       </div>
     </Link>

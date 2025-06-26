@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 export default function SellerPage() {
@@ -10,6 +10,7 @@ export default function SellerPage() {
     category: '',
     image: '',
     college: 'KIET Group of Institutions',
+    phone: '',
   });
 
   const [status, setStatus] = useState('');
@@ -63,6 +64,7 @@ export default function SellerPage() {
           category: '',
           image: '',
           college: 'KIET Group of Institutions',
+          phone: '',
         });
       } else {
         setStatus('❌ Failed to submit. Try again.');
@@ -99,6 +101,16 @@ export default function SellerPage() {
           name="price"
           placeholder="Price (INR)"
           value={formData.price}
+          onChange={handleChange}
+          required
+          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
+        />
+
+        <input
+          type="text"
+          name="phone"
+          placeholder="Contact Phone Number"
+          value={formData.phone}
           onChange={handleChange}
           required
           className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
