@@ -1,13 +1,19 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { Otp } from '@/models/Otp';
+import { User } from '@/models/User'; // ✅ Correct User model
 
 export async function POST(req: Request) {
   await connectToDatabase();
   const { email } = await req.json();
 
-  if (!email.endsWith('@kiet.edu')) {
-    return NextResponse.json({ error: 'Only @kiet.edu emails allowed' }, { status: 400 });
+  // ✅ Check if user already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return NextResponse.json(
+      { error: 'User already registered. Please log in.', userExists: true },
+      { status: 400 }
+    );
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -19,6 +25,5 @@ export async function POST(req: Request) {
     { upsert: true, new: true }
   );
 
-  // ✅ Return the OTP to frontend for client-side email sending
   return NextResponse.json({ success: true, otp });
 }
