@@ -55,10 +55,21 @@ export default function HomePage() {
 
       {/* Quote */}
       <p className="text-sm text-white font-medium italic mb-6 animate-pulse">
-  Your <span className="text-green-400 font-semibold">extras</span> are someone's <span className="text-green-400 font-semibold">essentials</span> 🚀
-</p>
+        Your <span className="text-green-400 font-semibold">extras</span> are someone's <span className="text-green-400 font-semibold">essentials</span> 🚀
+      </p>
 
-
+      {/* 👇 Marquee Advertisement Section */}
+      <div className="w-full overflow-hidden whitespace-nowrap border-t border-b border-green-500 my-4 py-2 bg-black">
+        <motion.div
+          className="inline-block text-green-400 font-semibold text-sm animate-marquee"
+          initial={{ x: '100%' }}
+          animate={{ x: '-100%' }}
+          transition={{ repeat: Infinity, duration: 12, ease: 'linear' }}
+        >
+          💻 Hot Deal: Laptop available under ₹10,000! Contact freakyakkmu@gmail.com for enquiry 🔥
+        </motion.div>
+      </div>
+      {/* 👆 Marquee Advertisement Section */}
 
       {/* Buttons */}
       <motion.div
