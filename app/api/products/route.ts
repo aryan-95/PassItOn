@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-// 🛡️ In-memory rate limit store (simple but works)
+// 🛡️ In-memory rate limiter
 const rateLimitMap = new Map<string, number>(); // userId => timestamp
 
 export async function POST(req: Request) {
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
   const userId = (payload as any).userId;
 
-  // ✅ Rate Limit Check
+  // ✅ Rate limit check (30 sec)
   const now = Date.now();
   const lastRequestTime = rateLimitMap.get(userId);
   if (lastRequestTime && now - lastRequestTime < 30 * 1000) {
@@ -38,7 +38,6 @@ export async function POST(req: Request) {
       { status: 429 }
     );
   }
-  // ✅ Update rate limit map
   rateLimitMap.set(userId, now);
 
   const user = await User.findById(userId);
@@ -46,10 +45,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
+  // ✅ Check product count for this user
+  const existingProductsCount = await Product.countDocuments({ userId });
+  if (existingProductsCount >= 20) {
+    return NextResponse.json(
+      { error: 'You can only upload up to 20 products.' },
+      { status: 403 }
+    );
+  }
+
   const data = await req.json();
   const { title, price, category, image, phone, college } = data;
 
-  // ✅ Backend Validations
+  // ✅ Backend validation
   if (!title || title.trim().length < 3) {
     return NextResponse.json({ error: 'Title must be at least 3 characters long.' }, { status: 400 });
   }
