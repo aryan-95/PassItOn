@@ -5,6 +5,9 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
+// 🛡️ In-memory rate limit store (simple but works)
+const rateLimitMap = new Map<string, number>(); // userId => timestamp
+
 export async function POST(req: Request) {
   await connectToDatabase();
 
@@ -24,13 +27,26 @@ export async function POST(req: Request) {
   }
 
   const userId = (payload as any).userId;
+
+  // ✅ Rate Limit Check
+  const now = Date.now();
+  const lastRequestTime = rateLimitMap.get(userId);
+  if (lastRequestTime && now - lastRequestTime < 30 * 1000) {
+    const waitTime = Math.ceil((30 * 1000 - (now - lastRequestTime)) / 1000);
+    return NextResponse.json(
+      { error: `Rate limit exceeded. Try again in ${waitTime} sec.` },
+      { status: 429 }
+    );
+  }
+  // ✅ Update rate limit map
+  rateLimitMap.set(userId, now);
+
   const user = await User.findById(userId);
   if (!user) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
   const data = await req.json();
-
   const { title, price, category, image, phone, college } = data;
 
   // ✅ Backend Validations
