@@ -93,6 +93,46 @@ export default function HomePage() {
         </button>
       </motion.div>
 
+      {/* Product Highlights */}
+<motion.div
+  className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 px-2 w-full max-w-4xl"
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.7, duration: 0.6 }}
+>
+  {/* Laptop Card */}
+  <div className="bg-zinc-900 p-4 rounded-2xl shadow-lg border border-green-500 hover:scale-105 transition-transform">
+    <Image
+      src="/laptop-product.jpg" // <-- Add your actual image in /public folder
+      alt="Second-hand Laptop"
+      width={500}
+      height={300}
+      className="rounded-xl object-cover mb-3"
+    />
+    <h3 className="text-white text-lg font-bold mb-1">🔥 2nd-Hand Laptop Deal</h3>
+    <p className="text-zinc-400 text-sm">
+      Perfect for coding & classes — grab a reliable laptop under ₹10,000 now!
+    </p>
+  </div>
+
+  {/* Co-set Card */}
+  <div className="bg-zinc-900 p-4 rounded-2xl shadow-lg border border-blue-500 hover:scale-105 transition-transform">
+    <Image
+      src="/coset-product.jpg" // <-- Add your actual image in /public folder
+      alt="Co-Set Brand New"
+      width={500}
+      height={300}
+      className="rounded-xl object-cover mb-3"
+    />
+    <h3 className="text-white text-lg font-bold mb-1">🆕 Co-Set – Brand New!</h3>
+    <h1>Available in multiple sizes sizes</h1>
+    <p className="text-zinc-400 text-sm">
+      Stylish and affordable — your campus wardrobe upgrade starts here 🎒✨
+    </p>
+  </div>
+</motion.div>
+
+
       {/* Footer */}
       <footer className="absolute bottom-6 w-full flex flex-col items-center gap-2 text-zinc-400 text-sm">
         <motion.button
