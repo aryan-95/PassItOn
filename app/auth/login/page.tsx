@@ -109,6 +109,18 @@ export default function LoginPage() {
             </motion.p>
           )}
         </motion.div>
+
+        {/* Note below the card */}
+        <p className="mt-4 text-sm text-gray-400 text-center">
+          If user does not exist, please{' '}
+          <span
+            onClick={() => router.push('/auth/sign-up')}
+            className="text-blue-400 underline cursor-pointer"
+          >
+            sign up
+          </span>{' '}
+          again.
+        </p>
       </motion.div>
     </div>
   );
