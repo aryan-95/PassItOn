@@ -19,7 +19,10 @@ export default function SellerPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    // Restrict phone to digits only
+    if (name === "phone" && !/^\d{0,10}$/.test(value)) return;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,12 +53,32 @@ export default function SellerPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 🚨 VALIDATION SECTION
+    const { title, price, phone } = formData;
+    const numericPrice = parseInt(price);
+    if (title.trim().length < 3) {
+      setStatus("❌ Title must be at least 3 characters.");
+      return;
+    }
+
+    if (isNaN(numericPrice) || numericPrice < 10 || numericPrice > 50000) {
+      setStatus("❌ Price must be between ₹10 and ₹50,000.");
+      return;
+    }
+
+    if (!/^\d{10}$/.test(phone)) {
+      setStatus("❌ Phone number must be 10 digits.");
+      return;
+    }
+
     setStatus("Submitting...");
+
     try {
       const res = await fetch("/api/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, price: numericPrice }),
       });
 
       if (res.ok) {
@@ -94,24 +117,35 @@ export default function SellerPage() {
         <h2 className="text-2xl font-bold mb-6 text-center">List a Product</h2>
 
         {/* Input fields */}
-        {["title", "price", "phone"].map((field) => (
-          <input
-            key={field}
-            type="text"
-            name={field}
-            placeholder={
-              field === "title"
-                ? "Item Title"
-                : field === "price"
-                  ? "Price (INR)"
-                  : "Contact Phone Number"
-            }
-            value={(formData as any)[field]}
-            onChange={handleChange}
-            required
-            className="w-full p-3 mb-4 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-          />
-        ))}
+        <input
+          type="text"
+          name="title"
+          placeholder="Item Title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+        />
+
+        <input
+          type="text"
+          name="price"
+          placeholder="Price (INR)"
+          value={formData.price}
+          onChange={handleChange}
+          required
+          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+        />
+
+        <input
+          type="text"
+          name="phone"
+          placeholder="Contact Phone Number"
+          value={formData.phone}
+          onChange={handleChange}
+          required
+          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+        />
 
         {/* Category */}
         <select
@@ -150,8 +184,7 @@ export default function SellerPage() {
           />
         )}
 
-        {/* College (disabled) */}
-        {/* College select */}
+        {/* College */}
         <select
           name="college"
           value={formData.college}
@@ -160,9 +193,7 @@ export default function SellerPage() {
           className="w-full p-3 mb-6 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
         >
           <option value="">Select Your College</option>
-          <option value="KIET Group of Institutions">
-            KIET Group of Institutions
-          </option>
+          <option value="KIET Group of Institutions">KIET Group of Institutions</option>
           <option value="Bennett University">Bennett University</option>
           <option value="Shiv Nadar University">Shiv Nadar University</option>
           <option value="PSIT">PSIT</option>

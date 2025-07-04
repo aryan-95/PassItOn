@@ -7,9 +7,8 @@ export async function GET(request: NextRequest) {
     await connectToDatabase();
 
     const url = new URL(request.url);
-    const pathname = url.pathname; // e.g., /api/products/category/books
-    const parts = pathname.split('/');
-    const category = parts[parts.length - 1]; // "books"
+    const parts = url.pathname.split('/');
+    const category = decodeURIComponent(parts[parts.length - 1] || "").trim();
 
     if (!category) {
       return NextResponse.json({ error: 'Category missing' }, { status: 400 });
