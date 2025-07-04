@@ -1,22 +1,24 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function SellerPage() {
   const [formData, setFormData] = useState({
-    title: '',
-    price: '',
-    category: '',
-    image: '',
-    college: 'KIET Group of Institutions',
-    phone: '',
+    title: "",
+    price: "",
+    category: "",
+    image: "",
+    college: "KIET Group of Institutions",
+    phone: "",
   });
 
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -25,22 +27,22 @@ export default function SellerPage() {
     if (!file) return;
 
     setUploading(true);
-    setStatus('Uploading image...');
+    setStatus("Uploading image...");
 
     const form = new FormData();
-    form.append('file', file);
+    form.append("file", file);
 
-    const res = await fetch('/api/upload', {
-      method: 'POST',
+    const res = await fetch("/api/upload", {
+      method: "POST",
       body: form,
     });
 
     const data = await res.json();
     if (res.ok) {
-      setFormData(prev => ({ ...prev, image: data.secure_url }));
-      setStatus('✅ Image uploaded');
+      setFormData((prev) => ({ ...prev, image: data.secure_url }));
+      setStatus("✅ Image uploaded");
     } else {
-      setStatus('❌ Image upload failed');
+      setStatus("❌ Image upload failed");
     }
 
     setUploading(false);
@@ -48,30 +50,30 @@ export default function SellerPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('Submitting...');
+    setStatus("Submitting...");
     try {
-      const res = await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       if (res.ok) {
-        setStatus('✅ Product listed successfully!');
+        setStatus("✅ Product listed successfully!");
         setFormData({
-          title: '',
-          price: '',
-          category: '',
-          image: '',
-          college: 'KIET Group of Institutions',
-          phone: '',
+          title: "",
+          price: "",
+          category: "",
+          image: "",
+          college: "KIET Group of Institutions",
+          phone: "",
         });
       } else {
-        setStatus('❌ Failed to submit. Try again.');
+        setStatus("❌ Failed to submit. Try again.");
       }
     } catch (err) {
       console.error(err);
-      setStatus('❌ Error submitting the form.');
+      setStatus("❌ Error submitting the form.");
     }
   };
 
@@ -92,17 +94,17 @@ export default function SellerPage() {
         <h2 className="text-2xl font-bold mb-6 text-center">List a Product</h2>
 
         {/* Input fields */}
-        {['title', 'price', 'phone'].map((field) => (
+        {["title", "price", "phone"].map((field) => (
           <input
             key={field}
             type="text"
             name={field}
             placeholder={
-              field === 'title'
-                ? 'Item Title'
-                : field === 'price'
-                ? 'Price (INR)'
-                : 'Contact Phone Number'
+              field === "title"
+                ? "Item Title"
+                : field === "price"
+                  ? "Price (INR)"
+                  : "Contact Phone Number"
             }
             value={(formData as any)[field]}
             onChange={handleChange}
@@ -149,13 +151,22 @@ export default function SellerPage() {
         )}
 
         {/* College (disabled) */}
-        <input
-          type="text"
+        {/* College select */}
+        <select
           name="college"
           value={formData.college}
-          disabled
-          className="w-full p-3 mb-6 rounded bg-zinc-700 text-white"
-        />
+          onChange={handleChange}
+          required
+          className="w-full p-3 mb-6 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+        >
+          <option value="">Select Your College</option>
+          <option value="KIET Group of Institutions">
+            KIET Group of Institutions
+          </option>
+          <option value="Bennett University">Bennett University</option>
+          <option value="Shiv Nadar University">Shiv Nadar University</option>
+          <option value="PSIT">PSIT</option>
+        </select>
 
         {/* Submit */}
         <motion.button
@@ -165,7 +176,7 @@ export default function SellerPage() {
           className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-all disabled:opacity-60"
           disabled={uploading}
         >
-          {uploading ? 'Please wait...' : 'Submit'}
+          {uploading ? "Please wait..." : "Submit"}
         </motion.button>
 
         {/* Status */}
