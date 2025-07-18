@@ -163,80 +163,72 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* WISHLIST SECTION (as a separate section before FOOTER) */}
-<motion.section
-  className="w-full flex justify-center mt-10 px-4"
-  initial={{ opacity: 0, y: 40 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ delay: 0.1, duration: 0.5 }}
->
-  <div className="w-full max-w-2xl bg-[#fff9e8] border-2  rounded-3xl shadow-lg p-7 flex flex-col items-center">
-    <div className="flex items-center gap-2 mb-2">
-      <Heart size={28} className="text-pink-400" />
-      <h2 className="text-2xl font-bold text-[#5B3DF6]">Wish for Something?</h2>
-    </div>
-    <p className="text-[#7c689c] text-base mb-6 text-center">
-      Didn’t find what you want? <span className="text-[#e11d48] font-semibold">Submit your wish</span> &amp; we’ll let sellers know!
-    </p>
-
-    <form
-      className="w-full flex flex-col gap-4 items-center"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const form = e.target as HTMLFormElement;
-        const formData = new FormData(form);
-
-        const itemRaw = formData.get("item");
-        const item = typeof itemRaw === "string" ? itemRaw.trim() : "";
-
-        const detailsRaw = formData.get("details");
-        const details = typeof detailsRaw === "string" ? detailsRaw.trim() : "";
-
-        if (!item) {
-          alert("Please enter what you're looking for");
-          return;
-        }
-
-        const res = await fetch("/api/wishlist", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ item, details }),
-        });
-
-        if (res.ok) {
-          alert("✅ Your wish has been submitted!");
-          form.reset();
-        } else {
-          alert("❌ Something went wrong.");
-        }
-      }}
-    >
-      <input
-        name="item"
-        type="text"
-        placeholder="What do you need? (e.g., Lamp, Calculator)"
-        className="w-full px-5 py-3 rounded-full bg-white border-2 border-pink-100 focus:border-pink-400 text-[#402973] placeholder-[#a78bfa] shadow-sm focus:outline-none text-base"
-        required
-      />
-      <textarea
-        name="details"
-        rows={2}
-        placeholder="Any details? (color, brand, etc.) (optional)"
-        className="w-full px-5 py-3 rounded-2xl bg-white border-2 border-pink-100 focus:border-pink-400 text-[#402973] placeholder-[#a78bfa] shadow-sm focus:outline-none text-base"
-      />
-      <button
-        type="submit"
-        className="mt-1 px-8 py-3 rounded-full bg-pink-500 hover:bg-pink-600 transition shadow font-bold text-white text-base flex items-center gap-2 hover:scale-105 active:scale-95"
+      {/* WISHLIST SECTION */}
+      <motion.section
+        className="w-full flex justify-center mt-10 px-4"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1, duration: 0.5 }}
       >
-        <Heart size={18} className="inline-block" />
-        Submit Wish
-      </button>
-    </form>
-  </div>
-</motion.section>
-
-
+        <div className="w-full max-w-2xl bg-[#fff9e8] border-2 rounded-3xl shadow-lg p-7 flex flex-col items-center">
+          <div className="flex items-center gap-2 mb-2">
+            <Heart size={28} className="text-pink-400" />
+            <h2 className="text-2xl font-bold text-[#5B3DF6]">Wish for Something?</h2>
+          </div>
+          <p className="text-[#7c689c] text-base mb-6 text-center">
+            Didn’t find what you want? <span className="text-[#e11d48] font-semibold">Submit your wish</span> &amp; we’ll let sellers know!
+          </p>
+          <form
+            className="w-full flex flex-col gap-4 items-center"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const formData = new FormData(form);
+              const itemRaw = formData.get("item");
+              const item = typeof itemRaw === "string" ? itemRaw.trim() : "";
+              const detailsRaw = formData.get("details");
+              const details = typeof detailsRaw === "string" ? detailsRaw.trim() : "";
+              if (!item) {
+                alert("Please enter what you're looking for");
+                return;
+              }
+              const res = await fetch("/api/wishlist", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ item, details }),
+              });
+              if (res.ok) {
+                alert("✅ Your wish has been submitted!");
+                form.reset();
+              } else {
+                alert("❌ Something went wrong.");
+              }
+            }}
+          >
+            <input
+              name="item"
+              type="text"
+              placeholder="What do you need? (e.g., Lamp, Calculator)"
+              className="w-full px-5 py-3 rounded-full bg-white border-2 border-pink-100 focus:border-pink-400 text-[#402973] placeholder-[#a78bfa] shadow-sm focus:outline-none text-base"
+              required
+            />
+            <textarea
+              name="details"
+              rows={2}
+              placeholder="Any details? (color, brand, etc.) (optional)"
+              className="w-full px-5 py-3 rounded-2xl bg-white border-2 border-pink-100 focus:border-pink-400 text-[#402973] placeholder-[#a78bfa] shadow-sm focus:outline-none text-base"
+            />
+            <button
+              type="submit"
+              className="mt-1 px-8 py-3 rounded-full bg-pink-500 hover:bg-pink-600 transition shadow font-bold text-white text-base flex items-center gap-2 hover:scale-105 active:scale-95"
+            >
+              <Heart size={18} className="inline-block" />
+              Submit Wish
+            </button>
+          </form>
+        </div>
+      </motion.section>
 
       {/* FOOTER */}
       <footer className="w-full pb-7 flex flex-col items-center gap-2 text-[#736a6a] text-[13px]">
