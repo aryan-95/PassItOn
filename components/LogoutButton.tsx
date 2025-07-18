@@ -1,14 +1,26 @@
 "use client";
-import { LogOut } from "lucide-react"; // Or your preferred icon
+import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 export function LogoutButton() {
   const router = useRouter();
 
-  const handleLogout = () => {
-    // Place your original logout logic here
-    router.push("/auth"); // OR your actual sign-out action
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("/api/auth/logout", { method: "POST" });
+
+      if (res.ok) {
+        // Redirect to login after clearing cookie
+        router.push("/auth/login");
+      } else {
+        // Optional: handle errors gracefully
+        alert("Failed to logout. Please try again.");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert("Something went wrong during logout.");
+    }
   };
 
   return (

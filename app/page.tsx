@@ -27,8 +27,8 @@ export default function HomePage() {
       >
         <div className="flex-1 flex flex-col gap-7">
           <h1 className="font-black text-4xl md:text-5xl leading-tight text-white">
-            Buy. <span className="text-[#FFE158]">Sell.</span><br />
-            Share. <span className="text-[#FFE158]">Pass It On.</span>
+             <span className="text-[#FFE158]">PASS</span> Karo,<span className="text-[#FFE158]"> EARN</span> Karo <br />
+            
           </h1>
           <div className="flex items-center mt-1">
             <div className="bg-[#faf7ed] rounded-full flex items-center px-5 py-[10px] w-full max-w-xs shadow-md">
