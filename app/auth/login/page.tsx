@@ -38,107 +38,97 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#faf7ed] via-[#E0D5FA] to-[#ffe9fa] flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-[#faf7ed] via-[#E0D5FA] to-[#ffe9fa]">
       <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col items-center w-full max-w-md"
+        className="w-full max-w-md bg-white/90 border border-[#6C4AB6]/10 rounded-3xl shadow-2xl p-8 md:p-10 flex flex-col items-center"
+        initial={{ y: 26, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.55 }}
       >
-        {/* Logo with glow */}
+        {/* Logo/avatar */}
         <motion.div
-          className="mb-6"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          whileHover={{ scale: 1.05 }}
+          className="mb-5"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <span className="inline-block bg-[#FFE158] p-3 rounded-full border-4 border-white shadow-lg">
+          <span className="inline-block bg-[#FFE158] p-3 rounded-full shadow-lg border-4 border-white">
             <Image
-              src="/logo.png"
-              alt="Startup Logo"
-              width={65}
-              height={65}
-              className="mx-auto rounded-full"
+              src="/logo2.jpeg"
+              alt="Site Logo"
+              width={100}
+              height={100}
+              className="rounded-full"
             />
           </span>
         </motion.div>
 
-        {/* Card */}
-        <motion.div
-          className="bg-white/90 border-2 border-[#E0D5FA] rounded-3xl shadow-2xl w-full px-8 py-10"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          <h2 className="text-2xl font-extrabold text-[#5B3DF6] text-center flex items-center gap-2 mb-6">
-            <LockKeyhole size={20} />
-            Login to Your Account
-          </h2>
+        <h2 className="text-2xl font-extrabold text-[#5B3DF6] mb-2 tracking-wide text-center flex gap-2 items-center">
+          <LockKeyhole size={20} />
+          Login to Your Account
+        </h2>
 
-          <div className="relative mb-4">
+        <div className="w-full mb-3">
+          <div className="relative">
             <input
               type="email"
               placeholder="Your student email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               autoComplete="username"
-              className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] placeholder-[#a78bfa] focus:ring-2 focus:ring-[#5B3DF6] focus:outline-none shadow font-semibold text-base pr-10 transition"
+              className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] focus:ring-2 focus:ring-[#5B3DF6] focus:outline-none text-base shadow placeholder-[#a78bfa] font-semibold transition pr-10"
             />
             <MailCheck size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8e79df]" />
           </div>
-          <div className="relative mb-4">
+        </div>
+        <div className="w-full mb-3">
+          <div className="relative">
             <input
               type="password"
               placeholder="Password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] placeholder-[#a78bfa] focus:ring-2 focus:ring-pink-400 focus:outline-none shadow font-semibold text-base pr-10 transition"
+              className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] focus:ring-2 focus:ring-pink-400 focus:outline-none text-base shadow placeholder-[#a78bfa] font-semibold transition pr-10"
             />
             <LockKeyhole size={17} className="absolute right-4 top-1/2 -translate-y-1/2 text-pink-400" />
           </div>
+        </div>
 
-          <motion.button
-            onClick={handleLogin}
-            disabled={loading}
-            whileTap={{ scale: 0.97 }}
-            whileHover={{ scale: 1.03 }}
-            className={`w-full py-4 rounded-full font-bold shadow-lg transition-all tracking-wide flex items-center justify-center gap-2
-              ${loading
-                ? 'bg-[#5B3DF6]/70 cursor-not-allowed opacity-70'
-                : 'bg-[#5B3DF6] hover:bg-[#6C4AB6] text-white'
-              }`}
-          >
-            {loading && <Loader2 size={18} className="animate-spin" />}
-            {loading ? 'Logging in...' : 'Login'}
-          </motion.button>
+        <motion.button
+          onClick={handleLogin}
+          disabled={loading}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className="w-full py-4 mt-1 rounded-full font-bold tracking-wide transition-all shadow-lg flex items-center justify-center gap-2 bg-[#5B3DF6] hover:bg-[#6C4AB6] text-white disabled:opacity-60"
+        >
+          {loading && <Loader2 size={18} className="animate-spin" />}
+          {loading ? 'Logging in...' : 'Login'}
+        </motion.button>
 
-          {status && (
-            <motion.p
-              className={`mt-4 text-center text-base font-semibold transition ${
-                status.startsWith("✅")
+        {status && (
+          <motion.p
+            className={`
+              mt-5 mb-2 text-center text-base font-semibold transition
+              ${
+                status.startsWith('✅')
                   ? "text-green-500"
-                  : status.startsWith("❌")
+                  : status.startsWith('❌')
                   ? "text-pink-500"
                   : "text-[#a78bfa]"
-              }`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              {status}
-            </motion.p>
-          )}
-        </motion.div>
-
-        <p className="mt-4 text-sm text-center text-[#6C4AB6] font-medium">
-          Don&apos;t have an account?{" "}
-          <span
-            onClick={() => router.push('/auth/sign-up')}
-            className="text-[#5B3DF6] underline font-bold cursor-pointer hover:text-pink-500 transition"
+              }
+            `}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
           >
-            Sign up
-          </span>
+            {status}
+          </motion.p>
+        )}
+
+        <p className="mt-6 text-sm text-center text-[#5B3DF6] hover:underline font-medium cursor-pointer"
+          onClick={() => router.push('/auth')}
+        >
+          Don&apos;t have an account? <span className="underline">Sign up</span>
         </p>
       </motion.div>
     </div>
