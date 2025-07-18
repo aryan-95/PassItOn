@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { LockKeyhole, MailCheck, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,14 +38,14 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#faf7ed] via-[#E0D5FA] to-[#ffe9fa] flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         className="flex flex-col items-center w-full max-w-md"
       >
-        {/* Logo with slight glow */}
+        {/* Logo with glow */}
         <motion.div
           className="mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -52,56 +53,76 @@ export default function LoginPage() {
           transition={{ duration: 0.6 }}
           whileHover={{ scale: 1.05 }}
         >
-          <Image
-            src="/logo.png"
-            alt="Startup Logo"
-            width={100}
-            height={100}
-            className="mx-auto rounded-full shadow-lg shadow-blue-500/10 hover:shadow-blue-500/30 transition"
-          />
+          <span className="inline-block bg-[#FFE158] p-3 rounded-full border-4 border-white shadow-lg">
+            <Image
+              src="/logo.png"
+              alt="Startup Logo"
+              width={65}
+              height={65}
+              className="mx-auto rounded-full"
+            />
+          </span>
         </motion.div>
 
         {/* Card */}
         <motion.div
-          className="bg-zinc-900 p-8 rounded-xl w-full"
+          className="bg-white/90 border-2 border-[#E0D5FA] rounded-3xl shadow-2xl w-full px-8 py-10"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+          <h2 className="text-2xl font-extrabold text-[#5B3DF6] text-center flex items-center gap-2 mb-6">
+            <LockKeyhole size={20} />
+            Login to Your Account
+          </h2>
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            className="w-full p-3 mb-4 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            className="w-full p-3 mb-4 rounded bg-zinc-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
-          />
+          <div className="relative mb-4">
+            <input
+              type="email"
+              placeholder="Your student email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              autoComplete="username"
+              className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] placeholder-[#a78bfa] focus:ring-2 focus:ring-[#5B3DF6] focus:outline-none shadow font-semibold text-base pr-10 transition"
+            />
+            <MailCheck size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8e79df]" />
+          </div>
+          <div className="relative mb-4">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              autoComplete="current-password"
+              className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] placeholder-[#a78bfa] focus:ring-2 focus:ring-pink-400 focus:outline-none shadow font-semibold text-base pr-10 transition"
+            />
+            <LockKeyhole size={17} className="absolute right-4 top-1/2 -translate-y-1/2 text-pink-400" />
+          </div>
 
           <motion.button
             onClick={handleLogin}
             disabled={loading}
             whileTap={{ scale: 0.97 }}
-            whileHover={{ scale: 1.02 }}
-            className={`w-full py-3 rounded-lg transition-all font-semibold ${
-              loading
-                ? 'bg-blue-800 cursor-not-allowed opacity-70'
-                : 'bg-blue-600 hover:bg-blue-700 active:scale-95'
-            }`}
+            whileHover={{ scale: 1.03 }}
+            className={`w-full py-4 rounded-full font-bold shadow-lg transition-all tracking-wide flex items-center justify-center gap-2
+              ${loading
+                ? 'bg-[#5B3DF6]/70 cursor-not-allowed opacity-70'
+                : 'bg-[#5B3DF6] hover:bg-[#6C4AB6] text-white'
+              }`}
           >
+            {loading && <Loader2 size={18} className="animate-spin" />}
             {loading ? 'Logging in...' : 'Login'}
           </motion.button>
 
           {status && (
             <motion.p
-              className="mt-4 text-yellow-400 text-sm text-center"
+              className={`mt-4 text-center text-base font-semibold transition ${
+                status.startsWith("✅")
+                  ? "text-green-500"
+                  : status.startsWith("❌")
+                  ? "text-pink-500"
+                  : "text-[#a78bfa]"
+              }`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
@@ -110,16 +131,14 @@ export default function LoginPage() {
           )}
         </motion.div>
 
-        {/* Note below the card */}
-        <p className="mt-4 text-sm text-gray-400 text-center">
-          If user does not exist, please{' '}
+        <p className="mt-4 text-sm text-center text-[#6C4AB6] font-medium">
+          Don&apos;t have an account?{" "}
           <span
             onClick={() => router.push('/auth/sign-up')}
-            className="text-blue-400 underline cursor-pointer"
+            className="text-[#5B3DF6] underline font-bold cursor-pointer hover:text-pink-500 transition"
           >
-            sign up
-          </span>{' '}
-          again.
+            Sign up
+          </span>
         </p>
       </motion.div>
     </div>

@@ -3,158 +3,253 @@
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { Mail } from 'lucide-react';
+import { Mail, PlusCircle, Compass, Heart } from 'lucide-react';
 import { LogoutButton } from '@/components/LogoutButton';
 
 export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen relative flex flex-col items-center justify-center text-center px-4 bg-gradient-to-b from-black via-zinc-900 to-black overflow-hidden">
-      
-      {/* Logout Button */}
-      <div className="absolute top-4 right-6">
-        <LogoutButton />
-      </div>
+    <div className="min-h-screen bg-[#faf7ed] flex flex-col items-center w-full">
 
-      {/* Logo with glow and bounce */}
-      <motion.div
-        className="mb-6"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8 }}
+      {/* NAVIGATION HEADER */}
+      <header className="w-full bg-[#5B3DF6] flex items-center justify-between px-6 py-5">
+        <span className="text-white text-xl font-bold tracking-widest">PASS IT ON</span>
+        <div className="flex items-center gap-4">
+          <LogoutButton />
+        </div>
+      </header>
+
+      {/* HERO SECTION */}
+      <section
+        className="w-full flex flex-col md:flex-row items-center justify-between px-6 pt-8 pb-10 bg-[#03B1AA]"
+        style={{ borderBottomLeftRadius: '32px', borderBottomRightRadius: '32px' }}
       >
-        <Image
-          src="/logo.png"
-          alt="Startup Logo"
-          width={120}
-          height={120}
-          className="mx-auto rounded-full shadow-lg shadow-green-500/40 hover:scale-105 transition-transform"
-        />
-      </motion.div>
+        <div className="flex-1 flex flex-col gap-7">
+          <h1 className="font-black text-4xl md:text-5xl leading-tight text-white">
+            Buy. <span className="text-[#FFE158]">Sell.</span><br />
+            Share. <span className="text-[#FFE158]">Pass It On.</span>
+          </h1>
+          <div className="flex items-center mt-1">
+            <div className="bg-[#faf7ed] rounded-full flex items-center px-5 py-[10px] w-full max-w-xs shadow-md">
+              <svg className="w-5 h-5 text-[#5B3DF6] mr-2" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                className="bg-transparent w-full outline-none text-base text-[#23185B] placeholder-[#23185B] font-medium"
+                placeholder="Search listings..."
+                type="text"
+              />
+            </div>
+          </div>
+          {/* BUTTON ROW under search bar */}
+          <div className="flex gap-4 mt-2">
+            <motion.button
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.97 }}
+              className="bg-[#FFE158] hover:bg-[#ffd900] text-[#23185B] font-bold flex items-center gap-2 px-6 py-3 rounded-full shadow-lg transition-all text-base"
+              onClick={() => router.push('/seller')}
+            >
+              <PlusCircle size={20} />
+              List an item
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.06 }}
+              whileTap={{ scale: 0.97 }}
+              className="bg-[#5B3DF6] hover:bg-[#3b278e] text-white font-bold flex items-center gap-2 px-6 py-3 rounded-full shadow-lg transition-all text-base"
+              onClick={() => router.push('/buyer')}
+            >
+              <Compass size={20} />
+              Browse
+            </motion.button>
+          </div>
+        </div>
+        <div className="flex-1 w-full flex justify-center items-center mt-8 md:mt-0">
+          <Image
+            src="/student-illustration.svg"
+            alt="Student illustration"
+            width={300}
+            height={300}
+            className="object-contain"
+            priority
+          />
+        </div>
+      </section>
 
-      {/* Title with celebration */}
-      <motion.h1
-        className="text-5xl md:text-6xl font-extrabold mb-4 text-white drop-shadow-[0_0_15px_rgba(0,255,150,0.6)]"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        🎉 Pass It On
-      </motion.h1>
+      {/* FEATURED LISTINGS */}
+      <section className="w-full max-w-5xl px-6 pt-12 pb-10">
+        <div className="bg-[#fff9e8] w-full rounded-2xl shadow-md py-8 px-6 flex flex-col">
+          <h2 className="text-2xl font-bold text-[#23185B] mb-7">Featured Listings</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-7">
+            <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
+              <Image src="/icons/book.png" alt="Book" width={54} height={54} />
+              <span className="mt-2 font-semibold text-lg text-[#23185B]">Textbooks</span>
+              <span className="text-[#23185B]">$15</span>
+            </div>
+            <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
+              <Image src="/icons/gamepad.png" alt="Game Console" width={54} height={54} />
+              <span className="mt-2 font-semibold text-lg text-[#23185B]">Game Console</span>
+              <span className="text-[#23185B]">$200</span>
+            </div>
+            <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
+              <Image src="/icons/phone.png" alt="Smartphone" width={54} height={54} />
+              <span className="mt-2 font-semibold text-lg text-[#23185B]">Smartphone</span>
+              <span className="text-[#23185B]">$120</span>
+            </div>
+            <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
+              <Image src="/icons/headphones.png" alt="Headphones" width={54} height={54} />
+              <span className="mt-2 font-semibold text-lg text-[#23185B]">Headphones</span>
+              <span className="text-[#23185B]">$30</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Subtext and vibe */}
-      <motion.p
-        className="text-lg md:text-xl max-w-xl text-zinc-300 mb-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-      >
-        Helping students declutter and find essentials. Buy or sell used items within your hostel or college – seamlessly.
-      </motion.p>
+      {/* HOW IT WORKS */}
+      <section className="w-full max-w-5xl px-6 pt-4 pb-10">
+        <div className="bg-[#ffefa9] w-full rounded-2xl shadow-md py-8 px-6 flex flex-col">
+          <h2 className="text-2xl font-bold text-[#23185B] mb-7 px-2">How It Works</h2>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-9">
+            <div className="flex flex-col items-center flex-1">
+              <div className="bg-[#5B3DF6] p-3 rounded-full mb-2">
+                <Image src="/icons/signup.png" alt="Sign Up" width={38} height={38} />
+              </div>
+              <div className="font-bold text-[#23185B] mb-1">Sign Up</div>
+              <div className="text-[#23185B] text-center text-sm font-medium">
+                Create an account<br />with your student email
+              </div>
+            </div>
+            <div className="flex flex-col items-center flex-1">
+              <div className="bg-[#03B1AA] p-3 rounded-full mb-2">
+                <Image src="/icons/list.png" alt="List Items" width={38} height={38} />
+              </div>
+              <div className="font-bold text-[#23185B] mb-1">List Items</div>
+              <div className="text-[#23185B] text-center text-sm font-medium">
+                Upload your items for<br />sale in just minutes
+              </div>
+            </div>
+            <div className="flex flex-col items-center flex-1">
+              <div className="bg-[#FFE158] p-3 rounded-full mb-2">
+                <Image src="/icons/connect.png" alt="Connect" width={38} height={38} />
+              </div>
+              <div className="font-bold text-[#23185B] mb-1">Connect</div>
+              <div className="text-[#23185B] text-center text-sm font-medium">
+                Chat with other<br />students and arrange
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Quote */}
-      <p className="text-sm text-white font-medium italic mb-6 animate-pulse">
-        Your <span className="text-green-400 font-semibold">extras</span> are someone's <span className="text-green-400 font-semibold">essentials</span> 🚀
-      </p>
+      {/* TESTIMONIALS */}
+      <section className="w-full max-w-5xl px-6 pt-2 pb-10">
+        <div className="bg-white shadow px-6 py-5 flex items-center gap-4 rounded-2xl">
+          <Image
+            src="/icons/student1.svg"
+            alt="Testimonial user"
+            width={48}
+            height={48}
+          />
+          <span className="text-base text-[#23185B] font-medium">
+            I found a great deal on a used textbook! The process was super easy
+          </span>
+          <button
+            className="ml-auto bg-[#5B3DF6] hover:bg-[#3b278e] transition text-white font-bold px-7 py-2 rounded-full text-base shadow"
+            onClick={() => router.push('/seller')}
+          >
+            List an item
+          </button>
+        </div>
+      </section>
 
-      {/* 👇 Marquee Advertisement Section */}
-      <div className="w-full overflow-hidden whitespace-nowrap border-t border-b border-green-500 my-4 py-2 bg-black">
-        <motion.div
-          className="inline-block text-green-400 font-semibold text-sm animate-marquee"
-          initial={{ x: '100%' }}
-          animate={{ x: '-100%' }}
-          transition={{ repeat: Infinity, duration: 12, ease: 'linear' }}
-        >
-          💻 Hot Deal: Laptop available under ₹10,000! Contact freakyakkmu@gmail.com for enquiry 🔥
-        </motion.div>
-      </div>
-      {/* 👆 Marquee Advertisement Section */}
-
-      {/* Buttons */}
-      <motion.div
-        className="flex gap-6 mb-10"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.6, duration: 0.5 }}
-      >
-        <button
-          className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-2xl shadow-lg transition-all hover:scale-105"
-          onClick={() => router.push('/buyer')}
-        >
-          👀 I’m a Buyer
-        </button>
-
-        <button
-          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-2xl shadow-lg transition-all hover:scale-105"
-          onClick={() => router.push('/seller')}
-        >
-          💼 I’m a Seller
-        </button>
-      </motion.div>
-
-      {/* Product Highlights */}
-<motion.div
-  className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 px-2 w-full max-w-4xl"
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.7, duration: 0.6 }}
+      {/* WISHLIST SECTION (as a separate section before FOOTER) */}
+<motion.section
+  className="w-full flex justify-center mt-10 px-4"
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ delay: 0.1, duration: 0.5 }}
 >
-  {/* Laptop Card */}
-  <div className="bg-zinc-900 p-4 rounded-2xl shadow-lg border border-green-500 hover:scale-105 transition-transform">
-    <Image
-      src="/laptop-product.jpg" // <-- Add your actual image in /public folder
-      alt="Second-hand Laptop"
-      width={500}
-      height={300}
-      className="rounded-xl object-cover mb-3"
-    />
-    <h3 className="text-white text-lg font-bold mb-1">🔥 2nd-Hand Laptop Deal</h3>
-    <p className="text-zinc-400 text-sm">
-      Perfect for coding & classes — grab a reliable laptop under ₹10,000 now!
+  <div className="w-full max-w-2xl bg-[#fff9e8] border-2  rounded-3xl shadow-lg p-7 flex flex-col items-center">
+    <div className="flex items-center gap-2 mb-2">
+      <Heart size={28} className="text-pink-400" />
+      <h2 className="text-2xl font-bold text-[#5B3DF6]">Wish for Something?</h2>
+    </div>
+    <p className="text-[#7c689c] text-base mb-6 text-center">
+      Didn’t find what you want? <span className="text-[#e11d48] font-semibold">Submit your wish</span> &amp; we’ll let sellers know!
     </p>
+
+    <form
+      className="w-full flex flex-col gap-4 items-center"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+
+        const itemRaw = formData.get("item");
+        const item = typeof itemRaw === "string" ? itemRaw.trim() : "";
+
+        const detailsRaw = formData.get("details");
+        const details = typeof detailsRaw === "string" ? detailsRaw.trim() : "";
+
+        if (!item) {
+          alert("Please enter what you're looking for");
+          return;
+        }
+
+        const res = await fetch("/api/wishlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ item, details }),
+        });
+
+        if (res.ok) {
+          alert("✅ Your wish has been submitted!");
+          form.reset();
+        } else {
+          alert("❌ Something went wrong.");
+        }
+      }}
+    >
+      <input
+        name="item"
+        type="text"
+        placeholder="What do you need? (e.g., Lamp, Calculator)"
+        className="w-full px-5 py-3 rounded-full bg-white border-2 border-pink-100 focus:border-pink-400 text-[#402973] placeholder-[#a78bfa] shadow-sm focus:outline-none text-base"
+        required
+      />
+      <textarea
+        name="details"
+        rows={2}
+        placeholder="Any details? (color, brand, etc.) (optional)"
+        className="w-full px-5 py-3 rounded-2xl bg-white border-2 border-pink-100 focus:border-pink-400 text-[#402973] placeholder-[#a78bfa] shadow-sm focus:outline-none text-base"
+      />
+      <button
+        type="submit"
+        className="mt-1 px-8 py-3 rounded-full bg-pink-500 hover:bg-pink-600 transition shadow font-bold text-white text-base flex items-center gap-2 hover:scale-105 active:scale-95"
+      >
+        <Heart size={18} className="inline-block" />
+        Submit Wish
+      </button>
+    </form>
   </div>
-
-  {/* Co-set Card */}
-  <div className="bg-zinc-900 p-4 rounded-2xl shadow-lg border border-blue-500 hover:scale-105 transition-transform">
-    <Image
-      src="/coset-product.jpg" // <-- Add your actual image in /public folder
-      alt="Co-Set Brand New"
-      width={500}
-      height={300}
-      className="rounded-xl object-cover mb-3"
-    />
-    <h3 className="text-white text-lg font-bold mb-1">🆕 Co-Set – Brand New!</h3>
-    <h1>Available in multiple sizes sizes</h1>
-    <p className="text-zinc-400 text-sm">
-      Stylish and affordable — your campus wardrobe upgrade starts here 🎒✨
-    </p>
-  </div>
-</motion.div>
+</motion.section>
 
 
-      {/* Footer */}
-      <footer className="absolute bottom-6 w-full flex flex-col items-center gap-2 text-zinc-400 text-sm">
+
+      {/* FOOTER */}
+      <footer className="w-full pb-7 flex flex-col items-center gap-2 text-[#736a6a] text-[13px]">
         <motion.button
-          whileHover={{ scale: 1.05, color: "#22c55e" }}
+          whileHover={{ scale: 1.05, color: "#03B1AA" }}
           onClick={() => window.location.href = "mailto:freakyakkmu@gmail.com"}
-          className="flex items-center gap-2 text-white transition-colors"
+          className="flex items-center gap-2 text-[#5B3DF6] font-semibold mt-2 transition-colors"
         >
           <Mail size={18} />
           Contact Us
         </motion.button>
-        <span className="text-xs text-zinc-500">© 2025 Passion Writers. All rights reserved.</span>
+        <span className="text-xs">© 2025 Passion Writers. All rights reserved.</span>
       </footer>
-
-      {/* Confetti Celebration */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.1 }}
-        transition={{ delay: 0.5, duration: 1.5 }}
-      >
-        <div className="w-full h-full bg-[url('/confetti.png')] bg-cover bg-center opacity-10 mix-blend-screen animate-pulse" />
-      </motion.div>
     </div>
   );
 }

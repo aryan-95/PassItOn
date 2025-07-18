@@ -2,6 +2,18 @@ import { use } from 'react';
 import { connectToDatabase } from '@/lib/db';
 import { Product } from '@/models/Product';
 
+// Helper for colored category badge
+const categoryColor = (cat: string) => {
+  switch (cat.toLowerCase()) {
+    case 'books': return 'bg-[#5B3DF6]/90 text-white';
+    case 'electronics': return 'bg-[#FFE158]/90 text-[#23185B]';
+    case 'furniture': return 'bg-[#F87171]/90 text-white';
+    case 'clothing': return 'bg-[#EC4899]/90 text-white';
+    case 'stationery': return 'bg-[#34D399]/90 text-[#23185B]';
+    default: return 'bg-[#38BDF8]/90 text-white';
+  }
+};
+
 type ProductType = {
   _id: string;
   title: string;
@@ -25,51 +37,59 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <p>Product not found.</p>
+      <div className="min-h-screen bg-[#faf7ed] flex items-center justify-center">
+        <div className="bg-white/90 rounded-2xl px-8 py-12 shadow-xl border border-pink-300 flex flex-col items-center">
+          <span className="text-5xl mb-3">😢</span>
+          <p className="text-2xl font-bold text-pink-500 mb-1">Product Not Found</p>
+          <p className="text-[#7c689c] text-center">Sorry, we couldn&apos;t locate that item.</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-10 flex flex-col items-center">
-      <img
-        src={product.image}
-        alt={product.title}
-        className="w-full max-w-md h-64 object-cover rounded-xl mb-6 shadow"
-        
-      />
+    <div className="min-h-screen bg-[#faf7ed] flex flex-col items-center justify-center py-10 px-3">
+      <div className="w-full max-w-lg bg-white/90 rounded-3xl shadow-2xl border-2 border-[#E0D5FA] p-7 flex flex-col items-center relative">
+        <div className="w-full flex flex-col items-center gap-3">
+          <div className="w-64 h-64 bg-[#faf7ed] rounded-2xl shadow border-2 border-[#f3e8ff] flex items-center justify-center mb-6 overflow-hidden">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="object-contain w-60 h-60 rounded-xl shadow"
+            />
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#5B3DF6] mb-1 text-center">{product.title}</h2>
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-xl font-black text-[#22C55E] drop-shadow-sm">₹{product.price}</span>
+            <span className={`${categoryColor(product.category)} px-4 py-1 rounded-full text-xs font-bold capitalize shadow-sm`}>
+              {product.category}
+            </span>
+          </div>
+          <span className="text-sm text-[#7c689c] mb-4 font-medium">Posted from: {product.college}</span>
+        </div>
 
-      <h2 className="text-3xl font-bold mb-2">{product.title}</h2>
-      <p className="text-green-400 text-xl mb-1">₹{product.price}</p>
-      <p className="text-zinc-400 text-sm mb-2">Category: {product.category}</p>
-      <p className="text-sm text-zinc-500 mb-4">Posted from: {product.college}</p>
-
-      {product.phone && (
-        <p className="text-md mb-1">
-          📞 Phone:{' '}
-          <a
-            href={`https://wa.me/91${product.phone}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-green-400 underline hover:text-green-300"
-          >
-            {product.phone}
-          </a>
-        </p>
-      )}
-
-      {product.email && (
-        <p className="text-md">
-          ✉️ Email:{' '}
-          <a
-            href={`mailto:${product.email}`}
-            className="text-blue-400 underline hover:text-blue-300"
-          >
-            {product.email}
-          </a>
-        </p>
-      )}
+        {/* Contact */}
+        <div className="w-full flex flex-col gap-2 mt-2">
+          {product.phone && (
+            <a
+              href={`https://wa.me/91${product.phone}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#22C55E]/90 text-lg font-bold text-white shadow hover:bg-[#16a34a] transition"
+            >
+              📞 WhatsApp: {product.phone}
+            </a>
+          )}
+          {product.email && (
+            <a
+              href={`mailto:${product.email}`}
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#5B3DF6]/90 text-lg font-bold text-white shadow hover:bg-[#3a28a7] transition"
+            >
+              ✉️ Email: {product.email}
+            </a>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,28 +1,41 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+"use client";
+import { LogOut } from "lucide-react"; // Or your preferred icon
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export function LogoutButton() {
   const router = useRouter();
-  const [loggingOut, setLoggingOut] = useState(false);
 
-  const handleLogout = async () => {
-    setLoggingOut(true);
-    await fetch('/api/auth/logout', { method: 'POST' });
-    router.push('/auth/');
+  const handleLogout = () => {
+    // Place your original logout logic here
+    router.push("/auth"); // OR your actual sign-out action
   };
 
   return (
     <motion.button
+      whileHover={{ scale: 1.07 }}
+      whileTap={{ scale: 0.96 }}
       onClick={handleLogout}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      disabled={loggingOut}
-      className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+      type="button"
+      className="
+        flex items-center gap-2
+        px-5 py-2
+        rounded-full
+        bg-white
+        text-[#5B3DF6]
+        font-semibold
+        shadow-md
+        transition
+        hover:bg-[#ffe158]
+        hover:text-[#23185B]
+        focus:outline-none
+        focus:ring-2 focus:ring-offset-2 focus:ring-[#5B3DF6]
+        text-base
+      "
+      title="Logout"
     >
-      {loggingOut ? 'Logging out...' : 'Logout'}
+      <LogOut size={18} strokeWidth={2} />
+      Logout
     </motion.button>
   );
 }

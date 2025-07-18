@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import emailjs from "@emailjs/browser";
 import Image from 'next/image';
+import { MailCheck, LockKeyhole, KeyRound, Loader2 } from 'lucide-react';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function AuthPage() {
   const [otp, setOtp] = useState('');
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
-  const [userExists, setUserExists] = useState(false); // NEW
+  const [userExists, setUserExists] = useState(false);
 
   const handleSendOtp = async () => {
     setLoading(true);
@@ -45,14 +46,13 @@ export default function AuthPage() {
         setStatus('✅ OTP sent to your email');
         setStep('verify');
       } catch (err) {
-        console.error('EmailJS send error:', err);
         setStatus('❌ Failed to send OTP email');
       }
     } else {
       setStatus(`❌ ${data.error}`);
       if (data.userExists) {
         setUserExists(true);
-        setTimeout(() => router.push('/auth/login'), 2000); // Auto redirect
+        setTimeout(() => router.push('/auth/login'), 2000);
       }
     }
 
@@ -82,94 +82,153 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex-col text-white flex items-center justify-center px-6">
-      <div>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-[#faf7ed] via-[#E0D5FA] to-[#ffe9fa]">
+      <motion.div
+        className="w-full max-w-md bg-white/90 border border-[#6C4AB6]/10 rounded-3xl shadow-2xl p-8 md:p-10 flex flex-col items-center"
+        initial={{ y: 26, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.55 }}
+      >
+        {/* Bubbly avatar with little shine */}
         <motion.div
-          className="mb-6"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          className="mb-5"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <Image
-            src="/logo.png"
-            alt="Startup Logo"
-            width={100}
-            height={100}
-            className="mx-auto rounded-full"
-          />
+          <span className="inline-block bg-[#FFE158] p-3 rounded-full shadow-lg border-4 border-white">
+            <Image
+              src="/logo.png"
+              alt="Site Logo"
+              width={60}
+              height={60}
+              className="rounded-full"
+            />
+          </span>
         </motion.div>
-      </div>
 
-      <div className="bg-zinc-900 p-8 rounded-xl max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          {step === 'signup' ? 'Sign Up with OTP' : 'Enter OTP'}
+        {/* Headline */}
+        <h2 className="text-2xl font-extrabold text-[#5B3DF6] mb-2 tracking-wide text-center flex gap-2 items-center">
+          {step === 'signup'
+            ? (
+                <>
+                  <MailCheck size={22} className="text-[#5B3DF6]" />
+                  Sign Up with OTP
+                </>
+              )
+            : (
+                <>
+                  <KeyRound size={20} className="text-[#22C55E]" />
+                  Enter OTP
+                </>
+              )
+          }
         </h2>
 
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          disabled={step === 'verify'}
-          onChange={e => setEmail(e.target.value)}
-          className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
-        />
+        {/* Email */}
+        <div className="w-full mb-3">
+          <div className="relative">
+            <input
+              type="email"
+              placeholder="Your student email"
+              value={email}
+              disabled={step === 'verify'}
+              onChange={e => setEmail(e.target.value)}
+              autoComplete="username"
+              className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] focus:ring-2 focus:ring-[#5B3DF6] focus:outline-none text-base shadow placeholder-[#a78bfa] font-semibold transition pr-10"
+            />
+            <MailCheck size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8e79df]" />
+          </div>
+        </div>
 
+        {/* Password or OTP */}
         {step === 'signup' ? (
-          <>
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
-            />
-            <button
-              onClick={handleSendOtp}
-              disabled={loading}
-              className="w-full py-3 bg-blue-600 rounded-lg hover:bg-blue-700"
-            >
-              {loading ? 'Sending OTP...' : 'Send OTP'}
-            </button>
-          </>
+          <div className="w-full mb-3">
+            <div className="relative">
+              <input
+                type="password"
+                placeholder="Set a password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                autoComplete="new-password"
+                className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] focus:ring-2 focus:ring-pink-300 focus:outline-none text-base shadow placeholder-[#a78bfa] font-semibold transition pr-10"
+              />
+              <LockKeyhole size={17} className="absolute right-4 top-1/2 -translate-y-1/2 text-pink-400" />
+            </div>
+          </div>
         ) : (
-          <>
-            <input
-              type="text"
-              placeholder="Enter OTP"
-              value={otp}
-              onChange={e => setOtp(e.target.value)}
-              className="w-full p-3 mb-4 rounded bg-zinc-800 text-white"
-            />
-            <button
-              onClick={handleVerifyOtp}
-              disabled={loading}
-              className="w-full py-3 bg-green-600 rounded-lg hover:bg-green-700"
-            >
-              {loading ? 'Verifying...' : 'Verify & Sign Up'}
-            </button>
-          </>
+          <div className="w-full mb-3">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={e => setOtp(e.target.value)}
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                className="w-full px-5 py-4 rounded-full bg-[#faf7ed] border-2 border-[#E0D5FA] text-[#23185B] focus:ring-2 focus:ring-[#22C55E] focus:outline-none text-base shadow placeholder-[#a78bfa] font-semibold transition pr-10"
+              />
+              <KeyRound size={17} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#22C55E]" />
+            </div>
+          </div>
         )}
 
+        {/* Action Button */}
+        <motion.button
+          onClick={step === 'signup' ? handleSendOtp : handleVerifyOtp}
+          disabled={loading}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className={`w-full py-4 mt-1 rounded-full font-bold tracking-wide 
+            transition-all shadow-lg flex items-center justify-center gap-2
+            ${
+              step === 'signup'
+                ? "bg-[#5B3DF6] hover:bg-[#6C4AB6] text-white"
+                : "bg-[#22C55E] hover:bg-[#16a34a] text-white"
+            }
+            disabled:opacity-60`}
+        >
+          {loading && <Loader2 size={18} className="animate-spin" />}
+          {step === 'signup' ? 'Send OTP' : 'Verify & Sign Up'}
+        </motion.button>
+
+        {/* Animated status feedback */}
         {status && (
-          <p className="mt-4 text-center text-sm text-yellow-400">{status}</p>
+          <motion.p
+            className={`
+              mt-5 mb-2 text-center text-base font-semibold transition
+              ${
+                status.startsWith('✅')
+                  ? "text-green-500"
+                  : status.startsWith('❌')
+                  ? "text-pink-500"
+                  : "text-[#a78bfa]"
+              }
+            `}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {status}
+          </motion.p>
         )}
 
         {userExists && (
           <p
             onClick={() => router.push('/auth/login')}
-            className="mt-2 text-sm text-green-400 underline text-center cursor-pointer"
+            className="mt-2 text-sm text-blue-500 underline text-center cursor-pointer font-bold"
           >
-            Login Now →
+            Already registered? Login Here →
           </p>
         )}
 
+        {/* Login Link */}
         <p
-          className="mt-6 text-sm text-center text-zinc-400 hover:text-white cursor-pointer"
+          className="mt-6 text-sm text-center text-[#5B3DF6] hover:underline font-medium cursor-pointer"
           onClick={() => router.push('/auth/login')}
         >
-          Already have an account? Login
+          Already have an account? <span className="underline">Login</span>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }

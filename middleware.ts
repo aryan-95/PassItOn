@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret-key';
+if (JWT_SECRET === 'secret-key' && process.env.NODE_ENV === 'production') {
+  console.warn('⚠️  Using default JWT secret in production!');
+}
 
 async function verifyJWT(token: string) {
   try {
@@ -36,18 +39,16 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!token) {
-    console.log('⛔ No token found');
+    // Optionally redirect to /auth/login if that's your entry login
     return NextResponse.redirect(new URL('/auth', request.url));
   }
 
   const payload = await verifyJWT(token);
 
   if (!payload) {
-    console.log('❌ Invalid token');
     return NextResponse.redirect(new URL('/auth', request.url));
   }
 
-  console.log('✅ Authenticated:', payload);
   return NextResponse.next();
 }
 
