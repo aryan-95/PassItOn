@@ -12,9 +12,29 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#faf7ed] flex flex-col items-center w-full">
 
-      {/* NAVIGATION HEADER */}
+      {/* NAVIGATION HEADER updated */}
       <header className="w-full bg-[#5B3DF6] flex items-center justify-between px-6 py-5">
-        <span className="text-white text-xl font-bold tracking-widest">PASS IT ON</span>
+        {/* Logo with startup name */}
+        <div className="flex items-center gap-3 cursor-pointer select-none" onClick={() => router.push('/')}>
+          <span className="inline-block p-1 rounded-full border-2 border-white shadow-md">
+            <Image
+              src="/logo2.jpeg"
+              alt="Brand Logo"
+              width={42}
+              height={42}
+              className="rounded-full"
+              priority
+            />
+          </span>
+          <span className="text-white font-bold tracking-wider text-lg md:text-xl"
+                style={{
+                  letterSpacing: '0.13em',
+                  fontFamily: "'Montserrat', 'Inter', Arial, sans-serif"
+                }}
+          >
+            PASS IT ON
+          </span>
+        </div>
         <div className="flex items-center gap-4">
           <LogoutButton />
         </div>
@@ -28,7 +48,6 @@ export default function HomePage() {
         <div className="flex-1 flex flex-col gap-7">
           <h1 className="font-black text-4xl md:text-5xl leading-tight text-white">
              <span className="text-[#FFE158]">PASS</span> Karo,<span className="text-[#FFE158]"> EARN</span> Karo <br />
-            
           </h1>
           <div className="flex items-center mt-1">
             <div className="bg-[#faf7ed] rounded-full flex items-center px-5 py-[10px] w-full max-w-xs shadow-md">
@@ -79,43 +98,37 @@ export default function HomePage() {
 
       {/* FEATURED LISTINGS */}
      <section className="w-full max-w-5xl px-6 pt-12 pb-10">
-  <div className="bg-[#fff9e8] w-full rounded-2xl shadow-md py-8 px-6 flex flex-col">
-    <h2 className="text-2xl font-bold text-[#23185B] mb-7">Featured Listings</h2>
-    
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-7">
-      <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
-        <Image src="/icons/book.png" alt="Book" width={54} height={54} />
-        <span className="mt-2 font-semibold text-lg text-[#23185B]">Textbooks</span>
-        <span className="text-[#23185B]">$15</span>
-      </div>
-      <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
-        <Image src="/coset.jpg" alt="Game Console" width={54} height={54} />
-        <span className="mt-2 font-semibold text-lg text-[#23185B]">Co-Set</span>
-        <span className="text-[#23185B]">₹700</span>
-      </div>
-      <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
-        <Image src="/laptop.jpg" alt="Book" width={54} height={54} />
-        <span className="mt-2 font-semibold text-lg text-[#23185B]">Laptop</span>
-        <span className="text-[#23185B]">₹10000</span>
-      </div>
-      <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
-        <Image src="/icons/headphones.png" alt="Headphones" width={54} height={54} />
-        <span className="mt-2 font-semibold text-lg text-[#23185B]">Headphones</span>
-        <span className="text-[#23185B]">$30</span>
-      </div>
-    </div>
-
-    {/* 📞 Contact Info CTA */}
-    <div className="mt-10 bg-[#ffedc2] text-center rounded-xl p-5 border border-[#ffd46b] shadow-md animate-pulse">
-      <p className="text-lg font-semibold text-[#23185B]">
-        📞 For more information, contact us at <span className="text-[#D93D04]">8273145433</span>
-      </p>
-    </div>
-
-  </div>
-</section>
-
-
+        <div className="bg-[#fff9e8] w-full rounded-2xl shadow-md py-8 px-6 flex flex-col">
+          <h2 className="text-2xl font-bold text-[#23185B] mb-7">Featured Listings</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-7">
+            <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
+              <Image src="/icons/book.png" alt="Book" width={54} height={54} />
+              <span className="mt-2 font-semibold text-lg text-[#23185B]">Textbooks</span>
+              <span className="text-[#23185B]">$15</span>
+            </div>
+            <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
+              <Image src="/coset.jpg" alt="Game Console" width={54} height={54} />
+              <span className="mt-2 font-semibold text-lg text-[#23185B]">Co-Set</span>
+              <span className="text-[#23185B]">₹700</span>
+            </div>
+            <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
+              <Image src="/laptop.jpg" alt="Book" width={54} height={54} />
+              <span className="mt-2 font-semibold text-lg text-[#23185B]">Laptop</span>
+              <span className="text-[#23185B]">₹10000</span>
+            </div>
+            <div className="flex flex-col items-center bg-[#f7f4e8] shadow-sm rounded-xl p-6 transition-transform hover:scale-105">
+              <Image src="/icons/headphones.png" alt="Headphones" width={54} height={54} />
+              <span className="mt-2 font-semibold text-lg text-[#23185B]">Headphones</span>
+              <span className="text-[#23185B]">$30</span>
+            </div>
+          </div>
+          <div className="mt-10 bg-[#ffedc2] text-center rounded-xl p-5 border border-[#ffd46b] shadow-md animate-pulse">
+            <p className="text-lg font-semibold text-[#23185B]">
+              📞 For more information, contact us at <span className="text-[#D93D04]">8273145433</span>
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* HOW IT WORKS */}
       <section className="w-full max-w-5xl px-6 pt-4 pb-10">
