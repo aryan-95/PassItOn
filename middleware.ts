@@ -23,6 +23,8 @@ export async function middleware(request: NextRequest) {
   const isPublicPath =
     pathname === '/' ||
     pathname.startsWith('/auth') ||
+    pathname.startsWith('/buyer') ||
+    pathname.startsWith('/seller') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon') ||
